@@ -22,6 +22,9 @@ const handleCreateTask = async (newTask) => {
  * @returns {Promise<void>} 
  */
 const fetchTask = async (id) => {
+  if (!id || isNaN(Number(id)) || Number(id) <= 0) {
+    throw new Error('Invalid task ID provided. ID must be a positive number.');
+  }
   const response = await axios.get(`${apiUrl}/tasks/${id}`);
   return response.data;
 }
@@ -34,6 +37,12 @@ const fetchTask = async (id) => {
  * @returns {Promise<void>}
  */
 const updateTask = async (id, updatedTask) => {
+  if (!id || isNaN(Number(id)) || Number(id) <= 0) {
+    throw new Error('Invalid task ID provided. ID must be a positive number.');
+  }
+  if (!updatedTask || typeof updatedTask !== 'object' || Array.isArray(updatedTask)) {
+    throw new Error('Invalid updated task data provided.');
+  }
   await axios.put(`${apiUrl}/tasks/${id}`, updatedTask);
 };
 
