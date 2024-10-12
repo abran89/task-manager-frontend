@@ -1,8 +1,8 @@
 <script setup>
 import TaskForm from '@/components/TaskForm.vue';
+import { fetchTask, updateTask } from '@/utils/taskService';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
 
 /**
  * Component for editing an existing task
@@ -17,18 +17,9 @@ const task = ref({ title: '', description: '' });
 const route = useRoute();
 const router = useRouter();
 
-const apiUrl = process.env.VUE_APP_API_URL;
-
-
-/**
- * Fetches the task data from the server
- * 
- * @returns {Promise<void>} 
- */
-const fetchTask = async () => {
+const loadTask = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/tasks/${route.params.id}`);
-    task.value = response.data;
+    task.value = await fetchTask(route.params.id);
   } catch (error) {
     console.error('Error fetching task:', error);
   }
@@ -42,14 +33,14 @@ const fetchTask = async () => {
  */
 const handleUpdateTask = async (updatedTask) => {
   try {
-    await axios.put(`${apiUrl}/tasks/${route.params.id}`, updatedTask);
+    await updateTask(route.params.id, updatedTask);
     router.push({ name: 'TaskManager', query: { message: 'Task updated successfully!' } });
   } catch (error) {
     console.error('Error updating task:', error);
   }
 };
 
-onMounted(fetchTask);
+onMounted(loadTask);
 </script>
 
 <template>

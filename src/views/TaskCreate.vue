@@ -1,8 +1,8 @@
 <script setup>
-import TaskForm from '@/components/TaskForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import TaskForm from '@/components/TaskForm.vue';
+import { handleCreateTask } from '@/utils/taskService';
 
 /**
  * Component for creating a new task
@@ -16,19 +16,12 @@ import axios from 'axios';
 const task = ref({ title: '', description: '' });
 const router = useRouter();
 
-const apiUrl = process.env.VUE_APP_API_URL;
-
-/**
- * Handles the creation of the task
- * 
- * @param {Object} newTask - The data for the new task to create
- * @returns {Promise<void>} 
- */
-const handleCreateTask = async (newTask) => {
+const submitTask = async (newTask) => {
   try {
-    await axios.post(`${apiUrl}/tasks`, newTask);
+    await handleCreateTask(newTask);
     router.push({ name: 'TaskManager', query: { message: 'Task created successfully!' } });
   } catch (error) {
+    alert(error.message || 'Error creating task.');
     console.error('Error creating task:', error);
   }
 };
@@ -36,6 +29,6 @@ const handleCreateTask = async (newTask) => {
 
 <template>
   <div class="container mt-4">
-    <TaskForm :task="task" :isEditing="false" @submit="handleCreateTask" />
+    <TaskForm :task="task" :isEditing="false" @submit="submitTask" />
   </div>
 </template>

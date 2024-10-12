@@ -1,28 +1,18 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 import TaskItem from './TaskItem.vue';
+import { fetchTasks, removeTask } from '@/utils/taskService';
+
 
 const router = useRouter();
 
 const tasks = ref([]);
 const sortAscending = ref(false);
 
-const apiUrl = process.env.VUE_APP_API_URL;
-
-/**
- * Fetches tasks from the API
- * Handles errors in case of failure
- *
- * @async
- * @function getTasks
- * @returns {Promise<void>}
- */
 const getTasks = async () => {
   try {
-    const { data } = await axios.get(`${apiUrl}/tasks`);
-    tasks.value = data;
+    tasks.value = tasks.value = await fetchTasks();
   } catch (error) {
     console.error("Error fetching tasks:", error);
   }
@@ -60,18 +50,10 @@ const editTask = (id) => {
   router.push(`/tasks/edit/${id}`);
 };
 
-/**
- * Deletes the specified task after confirmation
- *
- * @async
- * @function deleteTask
- * @param {number} id - The ID of the task to delete
- * @returns {Promise<void>}
- */
 const deleteTask = async (id) => {
   if (window.confirm("Are you sure you want to delete this task?")) {
     try {
-      await axios.delete(`${apiUrl}/tasks/${id}`);
+      await removeTask(id);
       tasks.value = tasks.value.filter(task => task.id !== id);
     } catch (error) {
       console.error("Error deleting task:", error);
