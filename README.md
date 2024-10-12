@@ -7,7 +7,7 @@ This is a simple task management application built with Vue.js. The application 
 1. **Clone the repository:**
 
    ```bash
-   git clone git@github.com:abran89/task-manager-frontend.git
+   git clone https://github.com/abran89/task-manager-frontend.git
    cd task-manager-frontend
     ```
 2. **Install the dependencies:**
