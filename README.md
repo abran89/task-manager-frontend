@@ -1,6 +1,6 @@
 # Task Manager front end
 
-This is a simple task management application built with Vue.js. The application allows users to create, edit, and delete tasks.
+This is a simple task management application built with Vue.js. The application allows users to create, edit, and delete tasks. Additionally, it includes tests implemented with Vitest to ensure the functionality and reliability of the application.
 
 ## Installation
 
@@ -29,4 +29,15 @@ Open the .env file in a text editor and set the necessary environment variables.
 To run the application in development mode, use:
 ```
 npm run serve
+```
+## Testing
+
+This project uses [Vitest](https://vitest.dev/) for unit testing.
+
+### Running Tests
+
+To run the tests, use the following command:
+
+```bash
+npm run test
 ```
